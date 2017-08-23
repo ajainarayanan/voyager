@@ -36,7 +36,7 @@ export class PlotListBase extends React.PureComponent<PlotListProps, any> {
       const {spec, fieldInfos} = plot;
       return (
         <Plot
-          key={JSON.stringify(spec)}
+          key={index}
           fieldInfos={fieldInfos}
           handleAction={handleAction}
           isPlotListItem={true}
