@@ -1,10 +1,11 @@
 
 import {EncodingQuery, isAutoCountQuery, isFieldQuery} from 'compassql/build/src/query/encoding';
-import {FieldQuery} from 'compassql/build/src/query/encoding';
+import {FieldQuery, ValueQuery} from 'compassql/build/src/query/encoding';
 import {ExpandedType} from 'compassql/build/src/query/expandedtype';
 import {isWildcard, SHORT_WILDCARD, Wildcard, WildcardProperty} from 'compassql/build/src/wildcard';
 import {Axis} from 'vega-lite/build/src/axis';
 import {Channel} from 'vega-lite/build/src/channel';
+import {ValueDef} from 'vega-lite/build/src/fielddef';
 import {Legend} from 'vega-lite/build/src/legend';
 import {Mark as VLMark} from 'vega-lite/build/src/mark';
 import {Scale} from 'vega-lite/build/src/scale';
@@ -35,6 +36,9 @@ export function isWildcardChannelId(shelfId: ShelfId): shelfId is ShelfWildcardC
 
 export type ShelfMark = VLMark | SHORT_WILDCARD;
 
+
+export type ShelfEncodingDef = ShelfFieldDef | ValueDef<string>;
+
 export interface ShelfFieldDef {
   field: WildcardProperty<string>;
 
@@ -57,6 +61,8 @@ export interface ShelfAnyEncodingDef extends ShelfFieldDef {
 }
 
 export type SpecificEncoding = {
+  // TODO: ShelfFieldDef | ValueDef
+  // (Just use ValueDef, no need for special ShelfValueDef)
   [P in Channel]?: ShelfFieldDef;
 };
 
@@ -84,12 +90,20 @@ export function fromEncodingQuery(encQ: EncodingQuery): ShelfFieldDef {
   } else if (isAutoCountQuery(encQ)) {
     throw Error('AutoCount Query not yet supported');
   } else {
-    throw Error('Value Query not yet supported');
+    return fromValueQuery(encQ);
   }
 }
 
-export function toEncodingQuery(fieldDef: ShelfFieldDef, channel: Channel | SHORT_WILDCARD): EncodingQuery {
-  return toFieldQuery(fieldDef, channel);
+export function fromValueQuery(encQ: ValueQuery): ValueDef<any> {
+  if (isWildcard(encQ.value)) {
+    throw Error('Voyager does not support wildcard value');
+  }
+  return encQ;
+}
+
+export function toEncodingQuery(encDef: ShelfFieldDef | ValueDef<any>, channel: Channel | SHORT_WILDCARD): EncodingQuery {
+  // TODO check type and do to ValueQuery
+  return toFieldQuery(encDef, channel);
 }
 
 export function toFieldQuery(fieldDef: ShelfFieldDef, channel: Channel | SHORT_WILDCARD): FieldQuery {
