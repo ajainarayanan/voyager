@@ -78,11 +78,8 @@ export type ResultModifyNestedFieldProp<
 export type AsyncResultRequest = ThunkAction<void , State, undefined>;
 export function resultRequest(resultType: ResultType, query: Query, filterKey?: string): AsyncResultRequest {
   return (dispatch: Dispatch<Action>, getState) => {
-    const data = selectData(getState());
-    if (!data) {
-      return;
-    }
     const schema = selectSchema(getState());
+    const data = selectData(getState());
     const config = selectConfig(getState());
 
     dispatch({

@@ -16,6 +16,10 @@ export function createQueryListener(store: Store<State>) {
     const previousData = data;
     data = selectData(state);
 
+    if (!data) {
+      return;
+    }
+
     // Check if either query or data has changed, need to submit a new query.
     if (previousQuery !== query || previousData !== data) {
       dispatchQueries(store, query);
