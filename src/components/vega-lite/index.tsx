@@ -20,11 +20,12 @@ const CHART_REF = 'chart';
 
 export class VegaLite extends React.PureComponent<VegaLiteProps, {}> {
   private view: vega.View;
+  private size: {width: number, height: number};
 
   public render() {
     return (
       <div>
-        <div className='chart' ref={CHART_REF}/>
+        <div className='chart' ref={CHART_REF} style={{marginLeft: 'auto', marginRight: 'auto'}}/>
         <div id="vis-tooltip" className="vg-tooltip"/>
       </div>
     );
@@ -75,8 +76,16 @@ export class VegaLite extends React.PureComponent<VegaLiteProps, {}> {
     this.runView();
   }
 
+  protected componentWillUpdate() {
+    this.size = this.getChartSize();
+  }
+
   protected componentDidUpdate(prevProps: VegaLiteProps, prevState: {}) {
     if (prevProps.spec !== this.props.spec) {
+      const chart = this.refs[CHART_REF] as HTMLElement;
+      chart.style.width = this.size.width + 'px';
+      chart.style.height = (this.size.height + 3) + 'px';
+      // add extra 3px to height so chart can contain the svg/canvas plot
       this.updateSpec();
     } else if (prevProps.data !== this.props.data) {
       this.bindData();
@@ -89,9 +98,8 @@ export class VegaLite extends React.PureComponent<VegaLiteProps, {}> {
     if (isInlineData(data) && isNamedData(spec.data) && !this.view.data(spec.data.name)) {
       this.view.change(spec.data.name,
         vega.changeset()
-            .remove(() => true)
+            .remove(() => true) // remove previous data
             .insert(data.values)
-           // remove previous data
       );
     }
   }
@@ -102,5 +110,13 @@ export class VegaLite extends React.PureComponent<VegaLiteProps, {}> {
     } catch (err) {
       this.props.logger.error(err);
     }
+  }
+
+  private getChartSize(): {width: number, height: number} {
+    const chart = this.refs[CHART_REF] as HTMLElement;
+    const svg = chart.querySelector(this.props.renderer || 'svg');
+    const width = Number(svg.getAttribute('width'));
+    const height = Number(svg.getAttribute('height'));
+    return {width, height};
   }
 }
