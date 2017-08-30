@@ -105,11 +105,13 @@ export class VegaLite extends React.PureComponent<VegaLiteProps, {}> {
   }
 
   private runView() {
-    try {
-      this.view.run();
-    } catch (err) {
-      this.props.logger.error(err);
-    }
+    setTimeout(() => {
+      try {
+        this.view.run();
+      } catch (err) {
+        this.props.logger.error(err);
+      }
+    });
   }
 
   private getChartSize(): {width: number, height: number} {
