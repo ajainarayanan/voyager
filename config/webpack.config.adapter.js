@@ -83,10 +83,7 @@ module.exports = {
           }, {
             loader: "sass-loader",
              options: {
-               sourceMap: true,
-               includePaths: [
-                 path.resolve(__dirname, "../node_modules/normalize-scss/sass")
-               ]
+               sourceMap: true
              }
           }]
         })
