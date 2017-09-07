@@ -5,7 +5,6 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import {connect} from 'react-redux';
 import {ClipLoader} from 'react-spinners';
 import * as SplitPane from 'react-split-pane';
-import '../../../components/app.scss';
 import {DataPane} from '../../../components/data-pane/index';
 import {EncodingPane} from '../../../components/encoding-pane/index';
 import {LoadData} from '../../../components/load-data-pane/index';
