@@ -1,7 +1,7 @@
 {
-  "name": "datavoyager",
+  "name": "cask-datavoyager",
   "version": "2.0.0-alpha.12",
-  "description": "",
+  "description": "This is a fork of the original voyager. This is here to trim down datavoyager to bare minimum as needed.",
   "author": {
     "name": "UW Interactive Data Lab",
     "url": "http://idl.cs.washington.edu"
@@ -13,9 +13,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/vega/voyager.git"
+    "url": "https://github.com/ajainarayanan/voyager.git"
   },
-  "main": "build/lib-voyager.js",
+  "main": "build/lib-adapter-voyager.js",
   "license": "BSD-3-Clause",
   "scripts": {
     "// for postinstall need to rebuild sass. Otherwise, yarn would forgot to include vendor for node-sass": "",
@@ -23,6 +23,8 @@
     "start": "webpack-dev-server --open --config config/webpack.config.dev.js",
     "start:server": "cross-env SERVER=\"http://localhost:3000\" webpack-dev-server --open --config config/webpack.config.dev.js",
     "build": "node scripts/build.js",
+    "build:adapter": "webpack --config=config/webpack.config.adapter.js",
+    "build:adapterw": "webpack --config=config/webpack.config.adapter.js --watch -d",
     "postbuild": "npm run tsc && npm run build:lib",
     "build:lib": "webpack --config config/webpack.config.lib.js",
     "watch": "webpack --config config/webpack.config.dev.js -d --watch",
