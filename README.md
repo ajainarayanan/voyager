@@ -4,6 +4,16 @@ Voyager 2 is a data exploration tool that blends manual and automated chart spec
 
 For more information about Voyager 2's design, please read our [CHI paper](http://idl.cs.washington.edu/papers/voyager2) and other related papers ([1](http://idl.cs.washington.edu/papers/compassql/), [2](http://idl.cs.washington.edu/papers/voyager/), [3](http://idl.cs.washington.edu/papers/vega-lite/)).
 
+# Cask Fork
+
+This is a fork for Cask's version of Voyager. We have basically built an adapter around the base voyager to extract out things that is not needed in a generic external environment. It makes sense for voyager as a project to come with all it can so that it can be embedded in any environment however the environment that we are using at Cask doesn't require the entire package. Hence the trim down version. The differences between voyager and the fork are,
+
+- Does not include normalize css
+- Has an adapter that contains modified version of app-root and store.
+  - `app-root` does not contain `Header` and `Footer` by default.
+  - `store` does not include `redux-action-log` and `loggerMiddleware` as we don't want to log anything in production environment yet & `redux-action-log` is not being used anymore (previously used in Footer).
+- `lib-adapter-voyager` introduces a new API `onComponentWillUnmount` for components embedding `voyager`. This is useful if voyager is repeatedly mounted and unmounted several times during the lifecycle of the application. This is to unsubscribe main listener from the store.
+
 **WARNING**:
 
 This repository now hosts the ongoing migration of Voyager 2 to a React/Redux application, which is **not yet ready** for general use. See below for older, more stable versions of the code.

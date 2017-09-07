@@ -128,8 +128,7 @@ module.exports = {
     "vega-tooltip": "vega-tooltip",
     "moment": "moment",
     "font-awesome": "font-awesome",
-    "font-awesome-sass-loader": "font-awesome-sass-loader",
-    "moment": "moment"
+    "font-awesome-sass-loader": "font-awesome-sass-loader"
   },
   plugins: [
     // Makes some environment variables available to the JS code, for example:
