@@ -2,6 +2,9 @@
 /scripts
 /test
 /.*
+/config
+/dist
+/src
 
 build/test
 codecov.yml
