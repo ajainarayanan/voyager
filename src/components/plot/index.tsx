@@ -224,6 +224,7 @@ export class PlotBase extends React.PureComponent<PlotProps, PlotState> {
   }
 
   private onPreviewMouseEnter() {
+    this.clearPreviewTimeout();
     this.previewTimeoutId = window.setTimeout(
       () => {
         const {handleAction, spec} = this.props;
