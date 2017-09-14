@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import * as CSSModules from 'react-css-modules';
+import {connect} from 'react-redux';
 import * as TetherComponent from 'react-tether';
 import {InlineData} from 'vega-lite/build/src/data';
 import {isDiscrete, isFieldDef} from 'vega-lite/build/src/fielddef';
@@ -16,6 +17,8 @@ import {PLOT_HOVER_MIN_DURATION} from '../../constants';
 import {Bookmark} from '../../models/bookmark';
 import {PlotFieldInfo, ResultPlot} from '../../models/result';
 import {ShelfFilter, toTransforms} from '../../models/shelf/filter';
+import {selectConfig} from '../../selectors';
+import {selectData} from '../../selectors/dataset';
 import {Field} from '../field/index';
 import {Logger} from '../util/util.logger';
 import {VegaLite} from '../vega-lite/index';
@@ -89,7 +92,7 @@ export class PlotBase extends React.PureComponent<PlotProps, PlotState> {
   }
 
   public render() {
-    const {isPlotListItem, onSort, showBookmarkButton, showSpecifyButton, spec, data} = this.props;
+    const {isPlotListItem, onSort, showBookmarkButton, showSpecifyButton, spec, data, config} = this.props;
 
     let notesDiv;
     const specKey = JSON.stringify(spec);
@@ -104,6 +107,10 @@ export class PlotBase extends React.PureComponent<PlotProps, PlotState> {
         />
       );
     }
+    spec = {
+      ...spec,
+      ...config.vegaPlotSpec
+    };
 
     return (
       <div styleName={isPlotListItem ? 'plot-list-item-group' : 'plot-group'}>
@@ -342,4 +349,13 @@ export class PlotBase extends React.PureComponent<PlotProps, PlotState> {
   }
 }
 
-export const Plot = CSSModules(PlotBase, styles);
+export const Plot = connect<PlotConnectProps, {}, PlotOwnProps>(
+  (state: State /*, props*/) => {
+    // TODO: once we have multiple cached data from Leilani's engine
+    // take spec from props and read spec.data.name
+    return {
+      data: selectData(state),
+      config: selectConfig(state)
+    };
+  }
+)(CSSModules(PlotBase, styles));
