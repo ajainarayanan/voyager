@@ -15,6 +15,8 @@ import {ShelfAction, SPEC_LOAD} from '../../actions/shelf';
 import {SHELF_PREVIEW_DISABLE, SHELF_PREVIEW_SPEC, ShelfPreviewAction} from '../../actions/shelf-preview';
 import {PLOT_HOVER_MIN_DURATION} from '../../constants';
 import {Bookmark} from '../../models/bookmark';
+import {VoyagerConfig} from '../../models/config';
+import {State} from '../../models/index';
 import {PlotFieldInfo, ResultPlot} from '../../models/result';
 import {ShelfFilter, toTransforms} from '../../models/shelf/filter';
 import {selectConfig} from '../../selectors';
@@ -25,7 +27,7 @@ import {VegaLite} from '../vega-lite/index';
 import {BookmarkButton} from './bookmarkbutton';
 import * as styles from './plot.scss';
 
-export interface PlotProps extends ActionHandler<
+export interface PlotOwnProps extends ActionHandler<
   ShelfAction | BookmarkAction | ShelfPreviewAction | ResultAction | LogAction
 > {
   data: InlineData;
@@ -44,6 +46,13 @@ export interface PlotProps extends ActionHandler<
   // so we can close the modal when the specify button is clicked.
   closeModal?: () => void;
 }
+
+export interface PlotConnectProps {
+  config: VoyagerConfig;
+  data: InlineData;
+}
+
+export type PlotProps = PlotOwnProps & PlotConnectProps;
 
 
 export interface PlotState {
@@ -92,7 +101,7 @@ export class PlotBase extends React.PureComponent<PlotProps, PlotState> {
   }
 
   public render() {
-    const {isPlotListItem, onSort, showBookmarkButton, showSpecifyButton, spec, data, config} = this.props;
+    const {isPlotListItem, onSort, showBookmarkButton, showSpecifyButton, data, config, spec} = this.props;
 
     let notesDiv;
     const specKey = JSON.stringify(spec);
@@ -107,10 +116,6 @@ export class PlotBase extends React.PureComponent<PlotProps, PlotState> {
         />
       );
     }
-    spec = {
-      ...spec,
-      ...config.vegaPlotSpec
-    };
 
     return (
       <div styleName={isPlotListItem ? 'plot-list-item-group' : 'plot-group'}>
@@ -144,7 +149,7 @@ export class PlotBase extends React.PureComponent<PlotProps, PlotState> {
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
         >
-          <VegaLite spec={spec} logger={this.plotLogger} data={data}/>
+          <VegaLite spec={spec} logger={this.plotLogger} data={data} config={config.vegaPlotSpec}/>
         </div>
         {notesDiv}
       </div>

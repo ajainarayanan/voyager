@@ -2,6 +2,7 @@ import * as React from 'react';
 import {ClipLoader} from 'react-spinners';
 import * as vega from 'vega';
 import * as vl from 'vega-lite';
+import {Config} from 'vega-lite/build/src/config';
 import {InlineData, isNamedData} from 'vega-lite/build/src/data';
 import {TopLevelExtendedSpec} from 'vega-lite/build/src/spec';
 import * as vegaTooltip from 'vega-tooltip';
@@ -16,6 +17,8 @@ export interface VegaLiteProps {
   logger: Logger;
 
   data: InlineData;
+
+  config: Config;
 }
 
 export interface VegaLiteState {
@@ -73,7 +76,15 @@ export class VegaLite extends React.PureComponent<VegaLiteProps, VegaLiteState> 
     //   }
     // };
     const {logger} = this.props;
-    const vlSpec = this.props.spec;
+    let vlSpec = this.props.spec;
+    const vegaliteConfig = this.props.config;
+    vlSpec = {
+      ...vlSpec,
+      config: {
+        ...vlSpec.config,
+        ...vegaliteConfig
+      }
+    };
     try {
       const spec = vl.compile(vlSpec, logger).spec;
       const runtime = vega.parse(spec, vlSpec.config);
