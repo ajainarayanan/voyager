@@ -7,7 +7,6 @@
 
 import * as Ajv from 'ajv';
 import * as draft4Schemas from 'ajv/lib/refs/json-schema-draft-04.json';
-import 'font-awesome-sass-loader'; // TODO should this move to App?
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
