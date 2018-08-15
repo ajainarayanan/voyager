@@ -114,13 +114,6 @@ module.exports = {
   externals: {
     "react": "react",
     "react-dom": "react-dom",
-    "react-css-modules": 'react-css-modules',
-    "react-dnd": "react-dnd",
-    "react-dnd-html5-backend": "react-dnd-html5-backend",
-    "react-redux": "react-redux",
-    "tether": "tether",
-    "react-tether": "react-tether",
-    "redux": "redux",
     "redux-thunk": "redux-thunk",
     "redux-undo": "redux-undo",
     "vega": "vega",
