@@ -1,6 +1,6 @@
 {
   "name": "cask-datavoyager",
-  "version": "2.0.0-alpha.12.7",
+  "version": "2.0.0-alpha.12.8",
   "description": "This is a fork of the original voyager. This is here to trim down datavoyager to bare minimum as needed.",
   "author": {
     "name": "UW Interactive Data Lab",
