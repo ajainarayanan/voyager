@@ -1,6 +1,6 @@
 {
   "name": "cask-datavoyager",
-  "version": "2.0.0-alpha.12.8",
+  "version": "2.0.0-alpha.12.9",
   "description": "This is a fork of the original voyager. This is here to trim down datavoyager to bare minimum as needed.",
   "author": {
     "name": "UW Interactive Data Lab",
@@ -21,7 +21,7 @@
     "start": "webpack-dev-server --open --config config/webpack.config.dev.js",
     "start:server": "cross-env SERVER=\"http://localhost:3000\" webpack-dev-server --open --config config/webpack.config.dev.js",
     "build": "node scripts/build.js",
-    "build:adapter": "webpack --config=config/webpack.config.adapter.js",
+    "build:adapter": "NODE_ENV=production webpack --config=config/webpack.config.adapter.js",
     "build:adapterw": "webpack --config=config/webpack.config.adapter.js --watch -d",
     "postbuild": "npm run tsc && npm run build:lib",
     "build:lib": "webpack --config config/webpack.config.lib.js",
